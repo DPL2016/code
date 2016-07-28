@@ -11,15 +11,6 @@ import javax.inject.Named;
 import java.util.List;
 
 @Named
-public class BookTypeDao {
-    @Inject
-    private SessionFactory sessionFactory;
-    public Session getSession(){
-        return sessionFactory.getCurrentSession();
-    }
-    public List<BookType> findAll(){
-        Criteria criteria = getSession().createCriteria(BookType.class);
-        criteria.addOrder(Order.desc("id"));
-        return criteria.list();
-    }
+public class BookTypeDao extends BaseDao<BookType,Integer>{
+
 }

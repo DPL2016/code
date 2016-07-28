@@ -14,16 +14,6 @@ import java.util.List;
  * Created by D on 2016/7/28.
  */
 @Named
-public class PublisherDao {
-    @Inject
-    private SessionFactory sessionFactory;
+public class PublisherDao extends BaseDao<Publisher,Integer> {
 
-    private Session getSession(){
-        return sessionFactory.getCurrentSession();
-    }
-    public List<Publisher> findAll(){
-        Criteria criteria = getSession().createCriteria(Publisher.class);
-        criteria.addOrder(Order.desc("id"));
-        return criteria.list();
-    }
 }
