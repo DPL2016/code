@@ -28,9 +28,13 @@ public class BooKController {
     public String home(@RequestParam(name = "p",required = false,defaultValue = "1") Integer pageNo,
                        Model model, HttpServletRequest request) {
         //List<Book> bookList = bookService.findAllBook();
+        List<BookType> bookTypeList = bookService.findAllBookType();
+        List<Publisher> publisherList = bookService.findAllPublisher();
         List<SearchParam>searchParamList = SearchParam.buiderSearchParam(request);
         Page<Book> page = bookService.findByPage(pageNo,searchParamList);
         model.addAttribute("Page", page);
+        model.addAttribute("bookTypeList", bookTypeList);
+        model.addAttribute("publisherList", publisherList);
         return "book/list";
     }
 
