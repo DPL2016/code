@@ -1,0 +1,7 @@
+0:0:0:0:0:0:0:1 - - [01/Aug/2016:11:40:26 +0800] "GET /user/new.do HTTP/1.1" 200 274 http-bio-80-exec-1 2012
+0:0:0:0:0:0:0:1 - - [01/Aug/2016:11:40:40 +0800] "GET /user/save.do HTTP/1.1" 500 7536 http-bio-80-exec-2 27
+0:0:0:0:0:0:0:1 - - [01/Aug/2016:11:40:50 +0800] "GET /user/new.do HTTP/1.1" 200 274 http-bio-80-exec-3 9
+0:0:0:0:0:0:0:1 - - [01/Aug/2016:11:40:51 +0800] "GET /user/new.do HTTP/1.1" 200 274 http-bio-80-exec-4 7
+0:0:0:0:0:0:0:1 - - [01/Aug/2016:11:40:58 +0800] "POST /user/save.do HTTP/1.1" 302 - http-bio-80-exec-5 20
+0:0:0:0:0:0:0:1 - - [01/Aug/2016:11:40:59 +0800] "GET /user/list.do HTTP/1.1" 200 206 http-bio-80-exec-6 1056
+0:0:0:0:0:0:0:1 - - [01/Aug/2016:11:43:51 +0800] "GET /user/list.do HTTP/1.1" 200 206 http-bio-80-exec-8 9
