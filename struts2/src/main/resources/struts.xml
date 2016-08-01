@@ -19,7 +19,19 @@
         </action>
     </package>
 
+
     <package name="userPackage" namespace="/user" extends="struts-default">
+
+        <interceptors>
+            <interceptor name="myTimer" class="com.kaishengit.action.interceptor.MyTimerInterceptor"/>
+            <interceptor-stack name="myStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="myTimer"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="myStack"/>
+
+
         <action name="new" class="com.kaishengit.action.UserAction" method="toSave">
             <result name="success" type="dispatcher">/WEB-INF/views/users/save.jsp</result>
         </action>
@@ -30,7 +42,7 @@
             </result>
         </action>
         <action name="list" class="com.kaishengit.action.UserAction" method="list">
-            <result name="success">/WEB-INF/views/users/list.jsp</result>
+            <result>/WEB-INF/views/users/list.jsp</result>
         </action>
     </package>
 </struts>

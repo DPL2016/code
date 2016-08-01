@@ -6,5 +6,6 @@
 </head>
 <body>
     <h3>Hello,Struts2!</h3>
+    <h3>${sessionScope.Hello}</h3>
 </body>
 </html>
