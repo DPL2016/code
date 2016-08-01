@@ -2,6 +2,7 @@ package com.kaishengit.action;
 
 
 import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.ServletActionContext;
 
 import javax.servlet.ServletContext;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
-public class BaseAction {
+public class BaseAction extends ActionSupport {
+    private static final long serialVersionUID = 29857516093165601L;
+
     public HttpServletRequest getHttpServletRequest(){
         return ServletActionContext.getRequest();
     }

@@ -7,7 +7,7 @@
 <body>
 <h3>Save User</h3>
 <form action="/user/save.do" method="post">
-    <input type="text " name="user.username">
+    <input type="text " name="user.username"><br><br>
     <input type="text" name="user.address">
     <button>save</button>
 </form>
