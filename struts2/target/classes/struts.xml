@@ -5,7 +5,10 @@
 <struts>
     <!--修改default.properties文件默认值-->
     <constant name="struts.action.extension" value="do"/>
+    <include file="struts-fileupload.xml"/>
+    <include file="struts-json.xml"/>
     <package name="basePackage" extends="struts-default" abstract="true">
+
         <interceptors>
             <interceptor name="login" class="com.kaishengit.action.interceptor.LoginInterceptor"/>
             <interceptor-stack name="myStack">
