@@ -5,4 +5,5 @@
     <select id="findById" resultType="Role">
          SELECT * FROM t_role WHERE id = #{id}
     </select>
+
 </mapper>
