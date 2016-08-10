@@ -1,0 +1,10 @@
+package com.kaishengit.mapper;
+
+import java.util.List;
+
+import com.kaishengit.pojo.User;
+
+public interface UserMapper {
+	List<User> findAll();
+
+}

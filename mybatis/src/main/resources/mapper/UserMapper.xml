@@ -3,7 +3,30 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="com.kaishengit.mapper.UserMapper">
-  	<select id="findAll" resultType="com.kaishengit.pojo.User">
+  	<select id="findAll" resultType="User">
   	select*from t_user
+  	</select>
+  	<select id="findByMap" resultType="User" parameterType="map">
+  		select*from t_user where username=#{username} and password=#{password}
+  	</select>
+  	<select id = "findByParams" resultType="User">
+  		select*from t_user where username=#{username} and password=#{pwd}
+  	</select>
+  	
+  	<select id="findByQueryParam" parameterType="map" resultType="User">
+  		select * from t_user
+  		<trim prefix="where" prefixOverrides="and|or">
+  			<if test="username!=null and username!='' ">
+  				username=#{username}
+  			</if>
+  			<choose>
+  				<when test="password != null and password !=''">
+  					and password = #{password}
+  				</when>
+  				<when test="email != null and email !=''">
+  					and email = #{email}
+  				</when>
+  			</choose>
+  		</trim>
   	</select>
   </mapper>

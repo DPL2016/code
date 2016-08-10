@@ -1,0 +1,12 @@
+package com.kaishengit.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import com.kaishengit.pojo.User;
+
+public interface UserMapper {
+	List<User> findAll();
+
+	User findByMap(Map<String, Object>param);
+}

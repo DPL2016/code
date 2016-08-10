@@ -1,0 +1,15 @@
+package com.kaishengit.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.kaishengit.pojo.User;
+
+public interface UserMapper {
+	List<User> findAll();
+
+	User findByMap(Map<String, Object>param);
+	User findByParams(@Param("username")String username,@Param("pwd") String password);
+}

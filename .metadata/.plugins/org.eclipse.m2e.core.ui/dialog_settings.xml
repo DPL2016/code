@@ -25,6 +25,7 @@
 	</section>
 	<section name="MavenProjectWizardLocationPage">
 		<list key="location">
+			<item value="E:\webtest\code\mybatis"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
@@ -46,9 +47,11 @@
 			<item value="com.kaishengit"/>
 		</list>
 		<list key="package">
+			<item value="com.kaishengit.weixin"/>
 			<item value="com.kaishengit.mybatis"/>
 		</list>
 		<list key="artifactId">
+			<item value="weixin"/>
 			<item value="mybatis"/>
 		</list>
 		<list key="projectNameTemplate">
