@@ -12,6 +12,7 @@ com\kaishengit\pojo\Customer.class
 com\kaishengit\pojo\Role.class
 com\kaishengit\util\ServletUtil.class
 com\kaishengit\util\ShiroUtil.class
+com\kaishengit\dto\DataTablesResult.class
 com\kaishengit\pojo\Task.class
 com\kaishengit\pojo\UserLog.class
 com\kaishengit\pojo\Document.class
@@ -19,4 +20,5 @@ com\kaishengit\pojo\SalesFile.class
 com\kaishengit\service\ShiroRealm.class
 com\kaishengit\pojo\SalesLog.class
 com\kaishengit\controller\HomeController.class
+com\kaishengit\controller\UserController.class
 com\kaishengit\util\Strings.class
