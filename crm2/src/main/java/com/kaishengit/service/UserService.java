@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.kaishengit.mapper.RoleMapper;
 import com.kaishengit.mapper.UserLogMapper;
 import com.kaishengit.mapper.UserMapper;
+import com.kaishengit.pojo.Role;
 import com.kaishengit.pojo.User;
 import com.kaishengit.pojo.UserLog;
 import com.kaishengit.util.ShiroUtil;
@@ -22,6 +23,9 @@ public class UserService {
 
     @Inject
     private UserMapper userMapper;
+
+    @Inject
+    private RoleMapper roleMapper;
 
     /**
      * 创建用户登录日志
@@ -66,5 +70,58 @@ public class UserService {
         User user = ShiroUtil.getCurrentUser();
         user.setPassword(DigestUtils.md5Hex(password));
         userMapper.updateUser(user);
+    }
+
+    /**
+     * 根据查询参数获取用户列表
+     * @param params
+     * @return
+     */
+    public List<User> findUserListByParams(Map<String, Object> params) {
+        return userMapper.findByParams(params);
+    }
+
+    /**
+     * 根据查询参数获取用户数量
+     * @param params
+     * @return
+     */
+    public Long findUserCountByParams(Map<String, Object> params) {
+        return userMapper.countByParams();
+    }
+
+    /**
+     * 获取用户总数
+     * @return
+     */
+    public Long findUserCount() {
+        return userMapper.count();
+    }
+
+    /**
+     * 获取所有角色
+     * @return
+     */
+    public List<Role> findAllRole() {
+        return roleMapper.findAll();
+    }
+
+    /**
+     * 根据用户名查找用户
+     * @param username
+     * @return
+     */
+    public User findByUserName(String username) {
+        return userMapper.findByUsername(username);
+    }
+
+    /**
+     * 新增用户
+     * @param user
+     */
+    public void saveUser(User user) {
+        user.setEnable(true);
+        user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+        userMapper.save(user);
     }
 }

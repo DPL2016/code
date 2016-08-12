@@ -4,6 +4,7 @@ com\kaishengit\util\Page.class
 com\kaishengit\dto\FlashMessage.class
 com\kaishengit\mapper\UserMapper.class
 com\kaishengit\exception\NotFoundException.class
+com\kaishengit\controller\AdminController.class
 com\kaishengit\mapper\UserLogMapper.class
 com\kaishengit\pojo\Sales.class
 com\kaishengit\pojo\Notice.class

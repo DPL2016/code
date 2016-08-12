@@ -83,6 +83,7 @@
             serverSide: true,
             ajax: "/user/log/load",
             ordering: false,
+            "autoWidth": false,
             columns: [
                 {"data": "logintime"},
                 {"data": "loginip"}
