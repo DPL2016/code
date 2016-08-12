@@ -31,11 +31,14 @@
     <div class="content-wrapper" style="background-image: url(/static/dist/img/asanoha-400px.png)">
         <!-- Content Header (Page header) -->
         <section class="content">
-            <ol class="breadcrumb" style="background-color: transparent">
-                <li><a href="/home"><i class="fa fa-dashboard"></i>主页</a></li>
-                <li class="active">修改密码</li>
-            </ol>
+
             <div class="box box-primary">
+                <div>
+                    <ol class="breadcrumb" style="background-color: transparent">
+                        <li><a href="/home"><i class="fa fa-dashboard"></i>主页</a></li>
+                        <li class="active">修改密码</li>
+                    </ol>
+                </div>
                 <div class="box-header with-border">
                     <h3 class="box-title">修改密码</h3>
 

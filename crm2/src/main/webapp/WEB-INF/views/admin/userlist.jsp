@@ -33,12 +33,16 @@
     <div class="content-wrapper" style="background-image: url(/static/dist/img/asanoha-400px.png)">
         <!-- Content Header (Page header) -->
         <section class="content">
-            <ol class="breadcrumb" style="background-color: transparent">
-                <li><a href="/home"><i class="fa fa-dashboard"></i>主页</a></li>
-                <li class="active">员工列表</li>
-            </ol>
+
             <div class="box box-primary">
+                <div>
+                    <ol class="breadcrumb" style="background-color: transparent">
+                        <li><a href="/home"><i class="fa fa-dashboard"></i>主页</a></li>
+                        <li class="active">员工列表</li>
+                    </ol>
+                </div>
                 <div class="box-header with-border">
+
                     <h3 class="box-title">员工管理</h3>
                     <div class="box-tools pull-right">
                         <a href="javascript:;" id="newBtn" class="btn btn-xs btn-success"><i class="fa fa-plus"></i> 新增</a>
@@ -119,6 +123,53 @@
     </div>
 </div>
 
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑用户</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" name="id" id="edit_user_id">
+                    <div class="form-group">
+                        <label>账号(用于系统登录)</label>
+                        <input type="text" class="form-control" disabled name="username"  id="edit_user_username">
+                    </div>
+                    <div class="form-group">
+                        <label>员工姓名(真实姓名)</label>
+                        <input type="text" class="form-control"  id="edit_user_realname" name="realname" >
+                    </div>
+                    <div class="form-group">
+                        <label>微信号</label>
+                        <input type="text" class="form-control"  id="edit_user_weixin" name="weixin">
+                    </div>
+                    <div class="form-group">
+                        <label>角色</label>
+                        <select class="form-control"  id="edit_user_roleid" name="roleid">
+                            <c:forEach items="${roleList}" var="role">
+                                <option value="${role.id}">${role.rolename}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <lable>状态</lable>
+                        <select class="form-control" name="enable"  id="edit_user_enable">
+                            <option value="true">正常</option>
+                            <option value="false">禁用</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="editBtn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.3 -->
@@ -162,7 +213,8 @@
                 },
                 {
                     "data": function (row) {
-                        return "<a href='javascript:;' class='resetPwd' rel='"+row.id+"'>重置密码</a> ";
+                        return "<a href='javascript:;' class='resetPwd' rel='"+row.id+"'>重置密码</a>" +
+                                "<a href='javascript:;' class='edit' rel='"+row.id+"'>    修改</a>  ";
                     }
                 }
             ],
@@ -258,6 +310,66 @@
                     alert("服务器异常");
                 });
             }
+        });
+
+        // 编辑用户
+        $("#editForm").validate({
+            errorClass: "text-danger",
+            errorElement: "span",
+            rules: {
+                realname: {
+                    required: true,
+                    rangelength: [2, 20]
+                },
+                weixin: {
+                    required: true
+                }
+            },
+            messages: {
+                realname: {
+                    required: "请输入真实姓名",
+                    rangelength: "真实姓名长度2~20位"
+                },
+                weixin: {
+                    required: "请输入微信号码"
+                }
+            },
+            submitHandler: function (form) {
+                $.post("/admin/users/edit", $(form).serialize()).done(function (data) {
+                    if (data == "success") {
+                        $("#editModal").modal('hide');
+                        dataTable.ajax.reload();
+                    }
+                }).fail(function () {
+                    alert("服务器异常");
+                });
+            }
+        });
+        $(document).delegate(".edit","click",function(){
+            var id = $(this).attr("rel");
+            $.get("/admin/users/"+id+".json").done(function(result){
+                if (result.state == "success"){
+                    $("#edit_user_id").val(result.data.id);
+                    $("#edit_user_username").val(result.data.username);
+                    $("#edit_user_realname").val(result.data.realname);
+                    $("#edit_user_weixin").val(result.data.weixin);
+                    $("#edit_user_roleid").val(result.data.roleid);
+                    $("#edit_user_enable").val(result.data.enable.toString());
+                    $("#editModal").modal({
+                        show: true,
+                        backdrop: 'static',
+                        keyboard: false
+                    });
+                }else {
+                    alert(result.message);
+                }
+            }).fail(function(){
+                alert("服务器异常");
+            });
+        });
+
+        $("#editBtn").click(function () {
+            $("#editForm").submit();
         });
     });
 </script>

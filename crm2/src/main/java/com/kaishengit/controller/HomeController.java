@@ -40,6 +40,16 @@ public class HomeController {
         return "home";
     }
 
+    @RequestMapping("/403")
+    public String error403(){
+        return "error/403";
+    }
+
+    @RequestMapping("/404")
+    public String error404(){
+        return "error/404";
+    }
+
     @RequestMapping(value = "/",method = RequestMethod.POST)
     public String login(String username, String password,HttpServletRequest request,RedirectAttributes redirectAttributes){
         Subject subject = SecurityUtils.getSubject();

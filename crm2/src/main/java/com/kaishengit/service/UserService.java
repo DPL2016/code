@@ -136,4 +136,12 @@ public class UserService {
             userMapper.updateUser(user);
         }
     }
+
+    public User findUserById(Integer id) {
+        return userMapper.findById(id);
+    }
+
+    public void editUser(User user) {
+        userMapper.updateUser(user);
+    }
 }

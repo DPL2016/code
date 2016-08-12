@@ -24,6 +24,7 @@
             </if>
             enable=#{enable}
         </set>
+        where id = #{id}
     </update>
     <select id="findByUsername" resultType="User">
         SELECT * FROM t_user WHERE username = #{username}
