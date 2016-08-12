@@ -124,4 +124,16 @@ public class UserService {
         user.setPassword(DigestUtils.md5Hex(user.getPassword()));
         userMapper.save(user);
     }
+
+    /**
+     * 重置密码
+     * @param id
+     */
+    public void resetUserPassword(Integer id) {
+        User user = userMapper.findById(id);
+        if (user != null){
+            user.setPassword(DigestUtils.md5Hex("000000"));
+            userMapper.updateUser(user);
+        }
+    }
 }

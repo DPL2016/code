@@ -17,4 +17,6 @@ public interface UserMapper {
     Long count();
 
     void save(User user);
+
+    User findById(Integer id);
 }

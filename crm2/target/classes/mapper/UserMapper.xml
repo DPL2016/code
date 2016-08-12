@@ -52,4 +52,7 @@
     <select id="count" resultType="long">
           SELECT count(*) FROM t_user
     </select>
+    <select id="findById" resultType="User">
+        SELECT * FROM t_user WHERE id = #{id}
+    </select>
 </mapper>

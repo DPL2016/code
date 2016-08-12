@@ -86,4 +86,16 @@ public class AdminController {
         userService.saveUser(user);
         return "success";
     }
+
+    /**
+     * 重置用户密码为000000
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/user/resetpassword",method = RequestMethod.POST)
+    @ResponseBody
+    public String resetPassword(Integer id){
+        userService.resetUserPassword(id);
+        return "success";
+    }
 }

@@ -162,7 +162,7 @@
                 },
                 {
                     "data": function (row) {
-                        return "";
+                        return "<a href='javascript:;' class='resetPwd' rel='"+row.id+"'>重置密码</a> ";
                     }
                 }
             ],
@@ -245,7 +245,20 @@
 
         $("#saveBtn").click(function () {
             $("#newForm").submit();
-        })
+        });
+//        重置密码
+        $(document).delegate(".resetPwd","click",function(){
+            var id = $(this).attr("rel");
+            if (confirm("确认将密码重置为：000000？")){
+                $.post("/admin/user/resetpassword",{"id":id}).done(function(data){
+                    if (data=="success"){
+                        alert("密码重置成功");
+                    }
+                }).fail(function(){
+                    alert("服务器异常");
+                });
+            }
+        });
     });
 </script>
 </body>
