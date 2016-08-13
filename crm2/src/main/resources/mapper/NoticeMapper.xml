@@ -6,4 +6,14 @@
     INSERT into t_notice(title, context,  userid, realname)
     VALUES (#{title},#{context},#{userid},#{realname})
 </insert>
+    <select id="findByParam" resultType="Notice">
+        SELECT * FROM t_notice ORDER BY id DESC
+        limit ${start},${length}
+    </select>
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_notice
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Notice">
+        SELECT * FROM t_notice WHERE id = #{id}
+    </select>
 </mapper>

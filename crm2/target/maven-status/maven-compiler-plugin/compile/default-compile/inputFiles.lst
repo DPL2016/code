@@ -4,6 +4,7 @@ E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\HomeController.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\util\ServletUtil.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\util\ShiroUtil.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\service\NoticeService.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\FilePreviewController.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\dto\FlashMessage.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\UserLog.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\NoticeMapper.java
@@ -20,8 +21,8 @@ E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Document.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Task.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Role.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\dto\DataTablesResult.java
-E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\UserMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\SalesLog.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\UserMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Notice.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Sales.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\NoticeController.java
