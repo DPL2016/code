@@ -57,7 +57,7 @@ public class NoticeController {
         param.put("length",length);
         List<Notice>noticeList = noticeService.findByParam(param);
         Long count = noticeService.count();
-        return new DataTablesResult(draw,noticeList,count,count);
+        return new DataTablesResult<>(draw,noticeList,count,count);
     }
 
     /**

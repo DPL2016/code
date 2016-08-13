@@ -27,7 +27,9 @@
 
 
     <%@include file="../include/header.jsp" %>
-    <%@include file="../include/leftside.jsp" %>
+    <jsp:include page="../include/leftside.jsp">
+        <jsp:param name="menu" value="notice"/>
+    </jsp:include>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="background-image: url(/static/dist/img/asanoha-400px.png)">
         <!-- Content Header (Page header) -->

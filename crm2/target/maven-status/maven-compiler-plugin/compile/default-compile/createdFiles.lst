@@ -10,6 +10,7 @@ com\kaishengit\exception\NotFoundException.class
 com\kaishengit\controller\AdminController.class
 com\kaishengit\mapper\UserLogMapper.class
 com\kaishengit\pojo\Sales.class
+com\kaishengit\controller\DocumentController.class
 com\kaishengit\pojo\User.class
 com\kaishengit\pojo\Notice.class
 com\kaishengit\pojo\Customer.class
@@ -26,5 +27,7 @@ com\kaishengit\pojo\SalesLog.class
 com\kaishengit\controller\NoticeController.class
 com\kaishengit\controller\HomeController.class
 com\kaishengit\service\NoticeService.class
+com\kaishengit\service\DocumentService.class
 com\kaishengit\controller\UserController.class
 com\kaishengit\util\Strings.class
+com\kaishengit\mapper\DocumentMapper.class
