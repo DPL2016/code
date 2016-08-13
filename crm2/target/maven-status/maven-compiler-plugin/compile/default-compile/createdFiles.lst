@@ -14,6 +14,7 @@ com\kaishengit\controller\DocumentController.class
 com\kaishengit\pojo\User.class
 com\kaishengit\pojo\Notice.class
 com\kaishengit\pojo\Customer.class
+com\kaishengit\mapper\CustomerMapper.class
 com\kaishengit\pojo\Role.class
 com\kaishengit\util\ServletUtil.class
 com\kaishengit\util\ShiroUtil.class
@@ -21,11 +22,13 @@ com\kaishengit\dto\DataTablesResult.class
 com\kaishengit\pojo\Task.class
 com\kaishengit\pojo\UserLog.class
 com\kaishengit\pojo\Document.class
+com\kaishengit\controller\CustomerController.class
 com\kaishengit\service\ShiroRealm.class
 com\kaishengit\pojo\SalesFile.class
 com\kaishengit\pojo\SalesLog.class
 com\kaishengit\controller\NoticeController.class
 com\kaishengit\controller\HomeController.class
+com\kaishengit\service\CustomerService.class
 com\kaishengit\service\NoticeService.class
 com\kaishengit\service\DocumentService.class
 com\kaishengit\controller\UserController.class

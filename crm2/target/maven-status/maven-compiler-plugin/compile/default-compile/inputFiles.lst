@@ -8,6 +8,7 @@ E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\FilePreviewControll
 E:\webtest\code\crm2\src\main\java\com\kaishengit\service\DocumentService.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\dto\FlashMessage.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\UserLog.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\CustomerController.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\NoticeMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\util\Strings.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\service\ShiroRealm.java
@@ -18,9 +19,10 @@ E:\webtest\code\crm2\src\main\java\com\kaishengit\util\Page.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Customer.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\DocumentController.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\AdminController.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\CustomerMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\SalesFile.java
-E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Task.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Document.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Task.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Role.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\DocumentMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\dto\DataTablesResult.java
@@ -29,5 +31,6 @@ E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\SalesLog.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Notice.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Sales.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\NoticeController.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\service\CustomerService.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\UserController.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\dto\JSONResult.java

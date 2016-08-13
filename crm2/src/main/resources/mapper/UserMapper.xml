@@ -27,7 +27,8 @@
         where id = #{id}
     </update>
     <select id="findByUsername" resultType="User">
-        SELECT * FROM t_user WHERE username = #{username}
+         SELECT t_user.*,t_role.id as 'role.id',t_role.rolename as 'role.rolename' FROM t_user
+         INNER JOIN t_role on t_user.roleid = t_role.id WHERE t_user.username = #{username}
     </select>
     <select id="findByParams" resultType="User">
         SELECT t_user.*,t_role.id AS 'role.id',t_role.rolename AS 'role.rolename' FROM t_user
