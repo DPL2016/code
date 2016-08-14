@@ -5,6 +5,7 @@ import com.kaishengit.mapper.CustomerMapper;
 import com.kaishengit.pojo.Customer;
 import com.kaishengit.util.ShiroUtil;
 import com.kaishengit.util.Strings;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -39,7 +40,7 @@ public class CustomerService {
         return customerMapper.countByParam(params);
     }
 
-    public Object findAllCompany() {
+    public List<Customer> findAllCompany() {
         return customerMapper.findByType(Customer.CUSTOMER_TYPE_COMPANY);
     }
 
@@ -51,5 +52,43 @@ public class CustomerService {
         customer.setUserid(ShiroUtil.getCurrentUserId());
         customer.setPinyin(Strings.toPinyin(customer.getName()));
         customerMapper.save(customer);
+    }
+
+    public void delCustomer(Integer id) {
+        Customer customer = customerMapper.findById(id);
+        if (customer!=null){
+            if (customer.getType().equals(Customer.CUSTOMER_TYPE_COMPANY)){
+                List<Customer> customerList = customerMapper.findByCompanyId(id);
+                for (Customer cust : customerList){
+                    cust.setCompanyname(null);
+                    cust.setCompanyid(null);
+                    customerMapper.update(cust);
+                }
+            }
+            customerMapper.del(id);
+        }
+    }
+
+    public Customer findCustomerById(Integer id) {
+        return customerMapper.findById(id);
+    }
+
+    @Transactional
+    public void editCustomer(Customer customer) {
+        if (customer.getType().equals(Customer.CUSTOMER_TYPE_COMPANY)){
+            List<Customer> customerList = customerMapper.findByCompanyId(customer.getId());
+            for (Customer cust:customerList){
+                cust.setCompanyid(customer.getId());
+                cust.setCompanyname(customer.getName());
+                customerMapper.update(cust);
+            }
+        }else {
+            if(customer.getCompanyid() != null) {
+                Customer company = customerMapper.findById(customer.getCompanyid());
+                customer.setCompanyname(company.getName());
+            }
+        }
+        customer.setPinyin(Strings.toPinyin(customer.getName()));
+        customerMapper.update(customer);
     }
 }

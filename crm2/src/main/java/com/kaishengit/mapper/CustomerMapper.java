@@ -15,7 +15,13 @@ public interface CustomerMapper {
 
     List<Customer> findByType(String type);
 
-    Customer findById(Integer companyid);
+    Customer findById(Integer id);
 
     void save(Customer customer);
+
+    void del(Integer id);
+
+    void update(Customer cust);
+
+    List<Customer> findByCompanyId(Integer id);
 }

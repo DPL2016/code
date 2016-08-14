@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
     <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="/static/plugins/easyautocomplete/easy-autocomplete.min.css">
 </head>
 
 <body class="hold-transition skin-blue  sidebar-mini">
@@ -60,7 +59,7 @@
                             <th>联系电话</th>
                             <th>电子邮件</th>
                             <th>等级</th>
-                            <th>*</th>
+                            <th style="width: 80px">*</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -127,10 +126,7 @@
                         <div class="form-group" id="companyList">
                             <lable>所属公司</lable>
                             <select name="companyid" class="form-control">
-                                <option value=""></option>
-                                <c:forEach items="${companyList}" var="company">
-                                    <option value="${company.id}">${company.name}</option>
-                                </c:forEach>
+                                <select name="companyid" class="form-control"></select>
                             </select>
                         </div>
                     </form>
@@ -138,6 +134,65 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                     <button type="button" class="btn btn-primary" id="saveBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">编辑用户</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <input type="hidden" name="userid" id="edit_userid">
+                        <input type="hidden" name="id" id="edit_id">
+                        <input type="hidden" name="type" id="edit_type">
+                        <div class="form-group">
+                            <label>客户名称</label>
+                            <input type="text" class="form-control" name="name" id="edit_name">
+                        </div>
+                        <div class="form-group">
+                            <label>联系电话</label>
+                            <input type="text" class="form-control" name="tel" id="edit_tel">
+                        </div>
+                        <div class="form-group">
+                            <label>客户等级</label>
+                            <select name="level" class="form-control" id="edit_level">
+                                <option value=""></option>
+                                <option value="★">★</option>
+                                <option value="★★">★★</option>
+                                <option value="★★★">★★★</option>
+                                <option value="★★★★">★★★★</option>
+                                <option value="★★★★★">★★★★★</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>微信号</label>
+                            <input type="text" class="form-control" id="edit_weixin" name="weixin">
+                        </div>
+                        <div class="form-group">
+                            <label>电子邮件</label>
+                            <input type="text" class="form-control" id="edit_email" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label>地址</label>
+                            <input type="text" class="form-control" id="edit_address" name="address">
+                        </div>
+                        <div class="form-group" id="editCompanyList">
+                            <lable>所属公司</lable>
+                            <select name="companyid" class="form-control">
+                                <select name="companyid" class="form-control"></select>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="editBtn">保存</button>
                 </div>
             </div>
         </div>
@@ -155,7 +210,6 @@
 <script src="/static/plugins/datatables/js/dataTables.bootstrap.min.js"></script>
 <script src="/static/plugins/moment/moment.min.js"></script>
 <script src="/static/plugins/validate/jquery.validate.min.js"></script>
-<script src="/static/plugins/easyautocomplete/jquery.easy-autocomplete.min.js"></script>
 <script>
     $(function () {
         var dataTable = $("#customerTable").DataTable({
@@ -163,7 +217,6 @@
             ajax: "/customer/load",
             ordering: false,
             "autoWidth": false,
-            "searching": false,
             columns: [
                 {
                     "data": function (row) {
@@ -176,22 +229,24 @@
                 {
                     "data": function (row) {
                         if (row.companyname) {
-                            return row.name + " - " + row.companyname;
+                            return '<a href="/customer/'+row.id+'">'+row.name+'</a>' + " - " + '<a href="/customer/'+row.companyid+'">'+row.companyname+'</a>';
                         }
-                        return row.name;
+                        return '<a href="/customer/'+row.id+'">'+row.name+'</a>';
                     }
                 },
                 {"data": "tel"},
                 {"data": "email"},
-                {"data": "level"},
+                {"data": function(row){
+                    return "<span style='color:gold'>"+row.level+"</span>"
+                }},
                 {
                     "data": function (row) {
-                        return ""
+                        return "<a href='javascript:;' rel='"+row.id+"' class='editLink'>编辑</a>  "<shiro:hasRole name="经理"> + "<a href='javascript:;' rel='"+row.id+"' class='delLink'>删除</a>　"</shiro:hasRole>;
                     }
                 }
             ],
             "language": { //定义中文
-                "search": "请输入员工姓名或登录账号:",
+                "search": "客户名称或电话:",
                 "zeroRecords": "没有匹配的数据",
                 "lengthMenu": "显示 _MENU_ 条数据",
                 "info": "显示从 _START_ 到 _END_ 条数据 共 _TOTAL_ 条数据",
@@ -239,9 +294,25 @@
         });
         $("#newBtn").click(function(){
             $("#newForm")[0].reset();
+            //使用Ajax加载最新的公司列表
+            $.get("/customer/company.json").done(function(data){
+                var $select = $("#companyList select");
+                $select.html("");
+                $select.append("<option></option>");
+                if (data&&data.length){
+                    for (var i=0;i<data.length;i++){
+                        var company = data[i];
+                        var option =  "<option value='"+company.id+"'>"+company.name+"</option>";
+                        $select.append(option);
+                    }
+                }
+            }).fail(function(){
+                alert("服务器异常");
+            });
+            $("#companyList").show();
             $("#newModal").modal({
                 show:true,
-                dropback:'static',
+                backdrop:'static',
                 keyboard:false
             });
         });
@@ -257,6 +328,99 @@
         });
         $("#saveBtn").click(function(){
             $("#newForm").submit();
+        });
+
+        <shiro:hasRole name="经理">
+        //删除用户
+        $(document).delegate(".delLink","click",function(){
+            if(confirm("删除客户会自动删除关联数据，继续吗?")) {
+                var id = $(this).attr("rel");
+                $.get("/customer/del/"+id).done(function(data){
+                    if (data=="success"){
+                        dataTable.ajax.reload();
+                    }
+                }).fail(function(){
+                    alert("服务器异常");
+                });
+            }
+        });
+        </shiro:hasRole>
+
+        //编辑
+        $("#editForm").validate({
+            errorClass: "text-danger",
+            errorElement: "span",
+            rules: {
+                name: {
+                    required: true
+                },
+                tel: {
+                    required: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "请输入客户名称"
+                },
+                tel: {
+                    required: "请输入联系电话"
+                }
+            },
+            submitHandler: function (form) {
+                $.post("/customer/edit", $(form).serialize()).done(function (data) {
+                    if ("success" == data) {
+                        $("#editModal").modal('hide');
+                        dataTable.ajax.reload();
+                    }
+                }).fail(function () {
+                    alert("服务器异常");
+                });
+            }
+        });
+        $(document).delegate(".editLink","click",function(){
+            var id = $(this).attr("rel");
+            var $select = $("#editCompanyList select");
+            $select.html("");
+            $select.append("<option></option>");
+            $.get("/customer/edit/"+id+".json").done(function(data){
+                if (data.state == "success"){
+                    if (data.companyList&&data.companyList.length){
+                        for(var i = 0;i < data.companyList.length;i++) {
+                            var company = data.companyList[i];
+                            var option = "<option value='"+company.id+"'>"+company.name+"</option>"
+                            $select.append(option);
+                        }
+                    }
+                    var customer = data.customer;
+                    if(customer.type == 'company') {
+                        $("#editCompanyList").hide();
+                    } else {
+                        $("#editCompanyList").show();
+                    }
+                    $("#edit_id").val(customer.id);
+                    $("#edit_name").val(customer.name);
+                    $("#edit_tel").val(customer.tel);
+                    $("#edit_weixin").val(customer.weixin);
+                    $("#edit_address").val(customer.address);
+                    $("#edit_email").val(customer.email);
+                    $("#edit_level").val(customer.level);
+                    $("#edit_userid").val(customer.userid);
+                    $("#edit_type").val(customer.type);
+                    $select.val(customer.companyid);
+                    $("#editModal").modal({
+                        show:true,
+                        backdrop:'static',
+                        keyboard: false
+                    });
+                }else {
+                    alert(data.message);
+                }
+            }).fail(function(){
+                alert("服务器异常");
+            });
+        });
+        $("#editBtn").click(function(){
+            $("#editForm").submit();
         });
     });
 </script>
