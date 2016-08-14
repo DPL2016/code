@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.kaishengit.mapper.CustomerMapper;
 import com.kaishengit.pojo.Customer;
 import com.kaishengit.util.ShiroUtil;
+import com.kaishengit.util.Strings;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,5 +37,19 @@ public class CustomerService {
             params.put("userid",ShiroUtil.getCurrentUserId());
         }
         return customerMapper.countByParam(params);
+    }
+
+    public Object findAllCompany() {
+        return customerMapper.findByType(Customer.CUSTOMER_TYPE_COMPANY);
+    }
+
+    public void saveCustomer(Customer customer) {
+        if (customer.getCompanyid()!=null){
+            Customer company = customerMapper.findById(customer.getCompanyid());
+            customer.setCompanyname(company.getName());
+        }
+        customer.setUserid(ShiroUtil.getCurrentUserId());
+        customer.setPinyin(Strings.toPinyin(customer.getName()));
+        customerMapper.save(customer);
     }
 }

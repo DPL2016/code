@@ -12,4 +12,10 @@ public interface CustomerMapper {
     Long count();
 
     Long countByParam(Map<String, Object> params);
+
+    List<Customer> findByType(String type);
+
+    Customer findById(Integer companyid);
+
+    void save(Customer customer);
 }

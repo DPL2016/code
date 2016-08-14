@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
     <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="/static/plugins/easyautocomplete/easy-autocomplete.min.css">
 </head>
 
 <body class="hold-transition skin-blue  sidebar-mini">
@@ -46,12 +47,15 @@
                 </div>
                 <div class="box-header with-border">
                     <h3 class="box-title">客户列表</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-xs btn-success" id="newBtn"><i class="fa fa-plus"></i> 新增客户</button>
+                    </div>
                 </div>
                 <div class="box-body">
                     <table class="table" id="customerTable">
                         <thead>
                         <tr>
-                            <th></th>
+                            <th style="width:20px;"></th>
                             <th>客户名称</th>
                             <th>联系电话</th>
                             <th>电子邮件</th>
@@ -68,6 +72,76 @@
         </section>
     </div>
     <!-- /.content-wrapper -->
+    <div class="modal fade" id="newModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新增用户</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="newForm">
+                        <div class="form-group">
+                            <label>类型</label>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" value="person" checked id="radioPerson">个人
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" value="company" id="radioCompany">公司
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>客户名称</label>
+                            <input type="text" class="form-control" name="name">
+                        </div>
+                        <div class="form-group">
+                            <label>联系电话</label>
+                            <input type="text" class="form-control" name="tel">
+                        </div>
+                        <div class="form-group">
+                            <label>客户等级</label>
+                            <select name="level" class="form-control">
+                                <option value=""></option>
+                                <option value="★">★</option>
+                                <option value="★★">★★</option>
+                                <option value="★★★">★★★</option>
+                                <option value="★★★★">★★★★</option>
+                                <option value="★★★★★">★★★★★</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>微信号</label>
+                            <input type="text" class="form-control" name="weixin">
+                        </div>
+                        <div class="form-group">
+                            <label>电子邮件</label>
+                            <input type="text" class="form-control" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label>地址</label>
+                            <input type="text" class="form-control" name="address">
+                        </div>
+                        <div class="form-group" id="companyList">
+                            <lable>所属公司</lable>
+                            <select name="companyid" class="form-control">
+                                <option value=""></option>
+                                <c:forEach items="${companyList}" var="company">
+                                    <option value="${company.id}">${company.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- ./wrapper -->
 
@@ -81,6 +155,7 @@
 <script src="/static/plugins/datatables/js/dataTables.bootstrap.min.js"></script>
 <script src="/static/plugins/moment/moment.min.js"></script>
 <script src="/static/plugins/validate/jquery.validate.min.js"></script>
+<script src="/static/plugins/easyautocomplete/jquery.easy-autocomplete.min.js"></script>
 <script>
     $(function () {
         var dataTable = $("#customerTable").DataTable({
@@ -89,26 +164,31 @@
             ordering: false,
             "autoWidth": false,
             "searching": false,
-            columns:[
-                {"data":function(row){
-                    if(row.type=='company'){
-                        return "<i class='fa fa-bank'></i>";
-                    }
-                    return "<i class='fa fa-user'></i>";
-                }},
+            columns: [
                 {
-                    "data":function(row) {
+                    "data": function (row) {
                         if (row.type == 'company') {
+                            return "<i class='fa fa-bank'></i>";
+                        }
+                        return "<i class='fa fa-user'></i>";
+                    }
+                },
+                {
+                    "data": function (row) {
+                        if (row.companyname) {
                             return row.name + " - " + row.companyname;
                         }
                         return row.name;
-                    }},
-                {"data":"tel"},
-                {"data":"email"},
-                {"data":"level"},
-                {"data":function(row){
-                    return ""
-                }}
+                    }
+                },
+                {"data": "tel"},
+                {"data": "email"},
+                {"data": "level"},
+                {
+                    "data": function (row) {
+                        return ""
+                    }
+                }
             ],
             "language": { //定义中文
                 "search": "请输入员工姓名或登录账号:",
@@ -125,6 +205,58 @@
                     "previous": "上一页"
                 }
             }
+        });
+//        新增用户
+        $("#newForm").validate({
+            errorClass: "text-danger",
+            errorElement: "span",
+            rules: {
+                name: {
+                    required: true
+                },
+                tel: {
+                    required: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "请输入客户名称"
+                },
+                tel: {
+                    required: "请输入联系电话"
+                }
+            },
+            submitHandler: function (form) {
+                $.post("/customer/new", $(form).serialize()).done(function (data) {
+                    if ("success" == data) {
+                        $("#newModal").modal('hide');
+                        dataTable.ajax.reload();
+                    }
+                }).fail(function () {
+                    alert("服务器异常");
+                });
+            }
+        });
+        $("#newBtn").click(function(){
+            $("#newForm")[0].reset();
+            $("#newModal").modal({
+                show:true,
+                dropback:'static',
+                keyboard:false
+            });
+        });
+        $("#radioCompany").click(function(){
+            if ($(this)[0].checked){
+                $("#companyList").hide();
+            }
+        });
+        $("#radioPerson").click(function(){
+            if ($(this)[0].checked){
+                $("#companyList").show();
+            }
+        });
+        $("#saveBtn").click(function(){
+            $("#newForm").submit();
         });
     });
 </script>
