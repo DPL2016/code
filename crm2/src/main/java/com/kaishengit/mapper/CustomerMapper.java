@@ -24,4 +24,6 @@ public interface CustomerMapper {
     void update(Customer cust);
 
     List<Customer> findByCompanyId(Integer id);
+
+    List<Customer> findAll(Integer userid);
 }

@@ -136,4 +136,12 @@ public class CustomerService {
 
         return mecard.toString();
     }
+
+    public List<Customer> findAllCustomer() {
+        Integer userid = null;
+        if (ShiroUtil.isEmployee()){
+            userid = ShiroUtil.getCurrentUserId();
+        }
+        return customerMapper.findAll(userid);
+    }
 }

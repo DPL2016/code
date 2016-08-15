@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
+    <link rel="stylesheet" href="/static/plugins/rangepicker/daterangepicker.css">
 </head>
 
 <body class="hold-transition skin-blue  sidebar-mini">
@@ -34,7 +35,6 @@
     <div class="content-wrapper" style="background-image: url(/static/dist/img/asanoha-400px.png)">
         <!-- Content Header (Page header) -->
         <section class="content">
-
             <div class="box box-default collapsed-box">
                 <div>
                     <ol class="breadcrumb" style="background-color: transparent">
@@ -52,17 +52,19 @@
                 </div>
                 <div class="box-body">
                     <form action="" class="form-inline">
-                        <input type="text" class="form-control" placeholder="机会名称">
-                        <select name="level" class="form-control">
+                        <input type="hidden" id="search_start_time">
+                        <input type="hidden" id="search_end_time">
+                        <input type="text" id="search_name"  class="form-control" placeholder="机会名称">
+                        <select id="search_progress" class="form-control">
                             <option value="">当前进度</option>
-                            <option value="">初次接触</option>
-                            <option value="">确认意向</option>
-                            <option value="">提供合同</option>
-                            <option value="">完成交易</option>
-                            <option value="">交易搁置</option>
+                            <option value="初次接触">初次接触</option>
+                            <option value="确认意向">确认意向</option>
+                            <option value="提供合同">提供合同</option>
+                            <option value="完成交易">完成交易</option>
+                            <option value="交易搁置">交易搁置</option>
                         </select>
                         <input type="text" id="rangepicker" class="form-control" placeholder="跟进时间">
-                        <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                        <button type="button" id="search_Btn" class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
                     </form>
                 </div>
             </div>
@@ -76,7 +78,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table">
+                    <table class="table"  id="dataTable">
                         <thead>
                         <tr>
                             <th>机会名称</th>
@@ -126,19 +128,20 @@
                     </div>
                     <div class="form-group">
                         <label>关联客户</label>
-                        <select name="level" class="form-control">
-                            <option value="">FaceBook</option>
-                            <option value="">Google中国</option>
+                        <select name="custid" class="form-control">
+                            <c:forEach items="${customerList}" var="customer">
+                                <option value="${customer.id}">${customer.name}</option>
+                            </c:forEach>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>当前进度</label>
-                        <select name="level" class="form-control">
-                            <option value="">初次接触</option>
-                            <option value="">确认意向</option>
-                            <option value="">提供合同</option>
-                            <option value="">完成交易</option>
-                            <option value="">交易搁置</option>
+                        <select name="progress" class="form-control">
+                            <option value="初次接触">初次接触</option>
+                            <option value="确认意向">确认意向</option>
+                            <option value="提供合同">提供合同</option>
+                            <option value="完成交易">完成交易</option>
+                            <option value="交易搁置">交易搁置</option>
                         </select>
                     </div>
                 </form>
@@ -163,6 +166,62 @@
 <script>
     $(function () {
 
+        var dataTable = $("#dataTable").DataTable({
+            searching:false,
+            serverSide:true,
+            ajax:{
+                url:"/sales/load",
+                data:function(dataSource){
+                    dataSource.name = $("#search_name").val();
+                    dataSource.progress = $("#search_progress").val();
+                    dataSource.startdate = $("#search_start_time").val();
+                    dataSource.enddate = $("#search_end_time").val();
+                }
+            },
+            columns:[
+                {"data":function(row){
+                    return "<a href='/sales/"+row.id+"'>"+row.name+"</a>";
+                }},
+                {"data":function(row){
+                    return "<a href='/customer/"+row.custid+"'>"+row.custname+"</a>";
+                }},
+                {"data":function(row){
+                    return "￥" + row.price;
+                }},
+                {"data":function(row) {
+                    if(row.progress == '交易完成') {
+                        return "<span class='label label-success'>"+row.progress+"</span>";
+                    }
+                    if(row.progress == '交易搁置') {
+                        return "<span class='label label-danger'>"+row.progress+"</span>";
+                    }
+                    return row.progress;
+                }},
+                {"data":"lasttime"},
+                {"data":"username"}
+            ],
+            ordering:false,
+            "autoWidth": false,
+            "language": { //定义中文
+                "search": "请输入书籍名称:",
+                "zeroRecords": "没有匹配的数据",
+                "lengthMenu": "显示 _MENU_ 条数据",
+                "info": "显示从 _START_ 到 _END_ 条数据 共 _TOTAL_ 条数据",
+                "infoFiltered": "(从 _MAX_ 条数据中过滤得来)",
+                "loadingRecords": "加载中...",
+                "processing": "处理中...",
+                "paginate": {
+                    "first": "首页",
+                    "last": "末页",
+                    "next": "下一页",
+                    "previous": "上一页"
+                }
+            }
+        });
+        //搜索
+        $("#search_Btn").click(function(){
+            dataTable.ajax.reload();
+        });
         //daterangepicker
         $("#rangepicker").daterangepicker({
             format: "YYYY-MM-DD",
@@ -210,8 +269,8 @@
         })
         ;
         $('#rangepicker').on('apply.daterangepicker', function (ev, picker) {
-            console.log(picker.startDate.format('YYYY-MM-DD'));
-            console.log(picker.endDate.format('YYYY-MM-DD'));
+            $("#search_start_time").val(picker.startDate.format('YYYY-MM-DD'));
+            $("#search_end_time").val(picker.endDate.format('YYYY-MM-DD'));
         });
 
 

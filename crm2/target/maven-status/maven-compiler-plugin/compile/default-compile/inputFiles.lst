@@ -14,12 +14,15 @@ E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\CustomerController.
 E:\webtest\code\crm2\src\main\java\com\kaishengit\util\Strings.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\service\ShiroRealm.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\User.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\SalesMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\service\UserService.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\SalesController.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\RoleMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\util\Page.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Customer.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\DocumentController.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\controller\AdminController.java
+E:\webtest\code\crm2\src\main\java\com\kaishengit\service\SalesService.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\mapper\CustomerMapper.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\SalesFile.java
 E:\webtest\code\crm2\src\main\java\com\kaishengit\pojo\Document.java
