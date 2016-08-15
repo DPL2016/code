@@ -1,9 +1,0 @@
-package com.kaishengit.test;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class MyBatisTestCase {
-	private Logger logger = LoggerFactory.getLogger(MyBatisTestCase.class);
-	
-}
