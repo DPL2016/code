@@ -11,8 +11,10 @@ import com.kaishengit.dto.DataTablesResult;
 import com.kaishengit.exception.ForbiddenException;
 import com.kaishengit.exception.NotFoundException;
 import com.kaishengit.pojo.Customer;
+import com.kaishengit.pojo.Sales;
 import com.kaishengit.pojo.User;
 import com.kaishengit.service.CustomerService;
+import com.kaishengit.service.SalesService;
 import com.kaishengit.service.UserService;
 import com.kaishengit.util.ShiroUtil;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,9 @@ public class CustomerController {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private SalesService salesService;
 
     /**
      * 显示客户列表页面，并传公司列表
@@ -124,6 +129,8 @@ public class CustomerController {
         }
         List<User> userList = userService.findAllUser();
         model.addAttribute("userList",userList);
+        List<Sales> salesList = salesService.findSalesByCustId(id);
+        model.addAttribute("salesList",salesList);
         return "customer/view";
     }
     /**

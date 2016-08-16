@@ -54,7 +54,7 @@
                     <form action="" class="form-inline">
                         <input type="hidden" id="search_start_time">
                         <input type="hidden" id="search_end_time">
-                        <input type="text" id="search_name"  class="form-control" placeholder="机会名称">
+                        <input type="text" id="search_name" class="form-control" placeholder="机会名称">
                         <select id="search_progress" class="form-control">
                             <option value="">当前进度</option>
                             <option value="初次接触">初次接触</option>
@@ -64,7 +64,8 @@
                             <option value="交易搁置">交易搁置</option>
                         </select>
                         <input type="text" id="rangepicker" class="form-control" placeholder="跟进时间">
-                        <button type="button" id="search_Btn" class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                        <button type="button" id="search_Btn" class="btn btn-default"><i class="fa fa-search"></i> 搜索
+                        </button>
                     </form>
                 </div>
             </div>
@@ -78,7 +79,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table"  id="dataTable">
+                    <table class="table" id="dataTable">
                         <thead>
                         <tr>
                             <th>机会名称</th>
@@ -157,6 +158,7 @@
 <script src="/static/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/plugins/validate/jquery.validate.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/dist/js/app.min.js"></script>
 <script src="/static/plugins/datatables/js/jquery.dataTables.min.js"></script>
@@ -167,40 +169,48 @@
     $(function () {
 
         var dataTable = $("#dataTable").DataTable({
-            searching:false,
-            serverSide:true,
-            ajax:{
-                url:"/sales/load",
-                data:function(dataSource){
+            searching: false,
+            serverSide: true,
+            ajax: {
+                url: "/sales/load",
+                data: function (dataSource) {
                     dataSource.name = $("#search_name").val();
                     dataSource.progress = $("#search_progress").val();
                     dataSource.startdate = $("#search_start_time").val();
                     dataSource.enddate = $("#search_end_time").val();
                 }
             },
-            columns:[
-                {"data":function(row){
-                    return "<a href='/sales/"+row.id+"'>"+row.name+"</a>";
-                }},
-                {"data":function(row){
-                    return "<a href='/customer/"+row.custid+"'>"+row.custname+"</a>";
-                }},
-                {"data":function(row){
-                    return "￥" + row.price;
-                }},
-                {"data":function(row) {
-                    if(row.progress == '交易完成') {
-                        return "<span class='label label-success'>"+row.progress+"</span>";
+            columns: [
+                {
+                    "data": function (row) {
+                        return "<a href='/sales/" + row.id + "'>" + row.name + "</a>";
                     }
-                    if(row.progress == '交易搁置') {
-                        return "<span class='label label-danger'>"+row.progress+"</span>";
+                },
+                {
+                    "data": function (row) {
+                        return "<a href='/customer/" + row.custid + "'>" + row.custname + "</a>";
                     }
-                    return row.progress;
-                }},
-                {"data":"lasttime"},
-                {"data":"username"}
+                },
+                {
+                    "data": function (row) {
+                        return "￥" + row.price;
+                    }
+                },
+                {
+                    "data": function (row) {
+                        if (row.progress == '交易完成') {
+                            return "<span class='label label-success'>" + row.progress + "</span>";
+                        }
+                        if (row.progress == '交易搁置') {
+                            return "<span class='label label-danger'>" + row.progress + "</span>";
+                        }
+                        return row.progress;
+                    }
+                },
+                {"data": "lasttime"},
+                {"data": "username"}
             ],
-            ordering:false,
+            ordering: false,
             "autoWidth": false,
             "language": { //定义中文
                 "search": "请输入书籍名称:",
@@ -219,7 +229,7 @@
             }
         });
         //搜索
-        $("#search_Btn").click(function(){
+        $("#search_Btn").click(function () {
             dataTable.ajax.reload();
         });
         //daterangepicker
@@ -274,12 +284,46 @@
         });
 
 
-        $("#newBtn").click(function () {
+        $("#newForm").validate({
+            errorClass: "text-danger",
+            errorElement: "span",
+            rules: {
+                name: {
+                    required: true
+                },
+                price: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages: {
+                name: {
+                    required: "请输入机会名称"
+                },
+                price: {
+                    required: "请输入价值",
+                    number: "数字格式错误"
+                }
+            },
+            submitHandler:function(form){
+                $.post("/sales/new",$(form).serialize()).done(function(data){
+                    if (data=="success"){
+                        $("#newModal").modal('hide');
+                    }
+                }).fail(function(){
+                    alert("服务器异常");
+                });
+            }
+        });
 
+        $("#newBtn").click(function () {
+            $("#newForm")[0].reset();
             $("#newModal").modal({
                 show: true, backdrop: 'static'
             });
-
+        });
+        $("#saveBtn").click(function(){
+            $("#newForm").submit();
         });
     });
 </script>

@@ -2,9 +2,13 @@ package com.kaishengit.controller;
 
 import com.google.common.collect.Maps;
 import com.kaishengit.dto.DataTablesResult;
+import com.kaishengit.exception.ForbiddenException;
+import com.kaishengit.exception.NotFoundException;
 import com.kaishengit.pojo.Sales;
+import com.kaishengit.pojo.SalesLog;
 import com.kaishengit.service.CustomerService;
 import com.kaishengit.service.SalesService;
+import com.kaishengit.util.ShiroUtil;
 import com.kaishengit.util.Strings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +37,16 @@ public class SalesController {
     }
 
     @RequestMapping(value = "/{id:\\d+}", method = RequestMethod.GET)
-    public String viewSales(@PathVariable Integer id) {
+    public String viewSales(@PathVariable Integer id,Model model) {
+        Sales sales = salesService.findSalesById(id);
+        if (sales==null){
+            throw new NotFoundException();
+        }
+        if(!sales.getUserid().equals(ShiroUtil.getCurrentUserId()) && !ShiroUtil.isManager()) {
+            throw new ForbiddenException();
+        }
+        model.addAttribute("sales",sales);
+        List<SalesLog> salesLogList = salesService.findSalesLogBySalesId(id);
         return "sales/view";
     }
 
@@ -64,5 +77,32 @@ public class SalesController {
         Long countParam = salesService.countByParam(params);
 
         return new DataTablesResult<>(draw, salesList, count, countParam);
+    }
+
+    /**
+     * 新增
+     */
+    @RequestMapping(value = "new",method =RequestMethod.POST )
+    @ResponseBody
+    public String save(Sales sales){
+        salesService.saveSales(sales);
+        return "success";
+    }
+
+    /**
+     * 新增日志
+     * @param salesLog
+     * @return
+     */
+    @RequestMapping(value = "/log/new",method = RequestMethod.POST)
+    public String saveLog(SalesLog salesLog){
+        salesService.saveLog(salesLog);
+        return "redirect:/sales/"+salesLog.getSalesid();
+    }
+
+    @RequestMapping(value = "/progress/edit",method = RequestMethod.POST)
+    public String editSalesProgress(Integer id,String progress){
+        salesService.editSalesProgress(id,progress);
+        return "redirect:/sales/"+id;
     }
 }

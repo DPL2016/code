@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.kaishengit.mapper.SalesMapper">
     <cache/>
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_sales( name, price, custid, custname, progress, lasttime, userid, username, successtime)
+        VALUES (#{name},#{price},#{custid},#{custname},#{progress},#{lasttime},#{userid},#{username},#{successtime})
+    </insert>
+    <update id="update">
+        UPDATE t_sales SET lasttime = #{lasttime},successtime=#{successtime},progress=#{progress}
+        where id = #{id}
+    </update>
     <select id="findByParam" resultType="Sales">
         SELECT * FROM t_sales
         <where>
@@ -43,5 +51,11 @@
                 and date(lasttime) &lt;= #{enddate}
             </if>
         </where>
+    </select>
+    <select id="findByCustId" resultType="Sales">
+        SELECT * FROM t_sales WHERE custid = #{custId} order by id desc
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Sales">
+        SELECT * FROM t_sales WHERE id = #{id}
     </select>
 </mapper>
