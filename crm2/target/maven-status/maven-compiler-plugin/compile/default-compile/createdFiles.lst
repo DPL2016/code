@@ -22,6 +22,7 @@ com\kaishengit\pojo\SalesLog.class
 com\kaishengit\service\CustomerService.class
 com\kaishengit\service\NoticeService.class
 com\kaishengit\controller\UserController.class
+com\kaishengit\mapper\SalesFileMapper.class
 com\kaishengit\util\Strings.class
 com\kaishengit\dto\JSONResult.class
 com\kaishengit\mapper\RoleMapper.class

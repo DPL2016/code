@@ -2,18 +2,24 @@ package com.kaishengit.service;
 
 import com.google.common.collect.Maps;
 import com.kaishengit.mapper.CustomerMapper;
+import com.kaishengit.mapper.SalesFileMapper;
 import com.kaishengit.mapper.SalesLogMapper;
 import com.kaishengit.mapper.SalesMapper;
 import com.kaishengit.pojo.Sales;
+import com.kaishengit.pojo.SalesFile;
 import com.kaishengit.pojo.SalesLog;
 import com.kaishengit.util.ShiroUtil;
+import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Named
 public class SalesService {
@@ -23,6 +29,12 @@ public class SalesService {
     private CustomerMapper customerMapper;
     @Inject
     private SalesLogMapper salesLogMapper;
+
+    @Inject
+    private SalesFileMapper salesFileMapper;
+
+    @Value("${imagePath}")
+    private String savePath;
 
     public List<Sales> findByParam(Map<String, Object> params) {
         if(ShiroUtil.isEmployee()) {
@@ -94,5 +106,37 @@ public class SalesService {
         salesLog.setContext(ShiroUtil.getCurrentRealName()+ " 更改进度为：" + progress);
         salesLog.setSalesid(sales.getId());
         salesLogMapper.save(salesLog);
+    }
+
+    public List<SalesFile> findSalesFileBySalesId(Integer salesId) {
+        return salesFileMapper.findBySalesId(salesId);
+    }
+
+    public void updateFile(InputStream inputStream, String originalFilename, String contentType, long size, Integer salesid) {
+        String newName = UUID.randomUUID().toString();
+        if (originalFilename.lastIndexOf(".")!= -1){
+            newName += originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
+        try {
+            FileOutputStream outputStream = new FileOutputStream(new File(savePath,newName));
+            IOUtils.copy(inputStream,outputStream);
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+        SalesFile salesFile = new SalesFile();
+        salesFile.setSalesid(salesid);
+        salesFile.setContenttype(contentType);
+        salesFile.setFilename(newName);
+        salesFile.setName(originalFilename);
+        salesFile.setSize(size);
+        salesFileMapper.save(salesFile);
+    }
+
+    public SalesFile findSalesFileById(Integer id) {
+        return salesFileMapper.findById(id);
     }
 }
