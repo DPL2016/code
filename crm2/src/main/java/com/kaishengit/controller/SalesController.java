@@ -153,4 +153,9 @@ public class SalesController {
             throw new RuntimeException(e);
         }
     }
+    @RequestMapping(value = "/del/{id:\\d+}",method = RequestMethod.GET)
+    public String delSales(@PathVariable Integer id){
+        salesService.delSales(id);
+        return "redirect:/sales";
+    }
 }
